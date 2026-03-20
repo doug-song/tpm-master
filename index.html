@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIA 마일스톤 × 고객 여정 매트릭스</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600&display=swap');
+  :root {
+    --bg: #ffffff; --bg2: #f7f6f3; --bg3: #f0efeb;
+    --tx: #1a1a1a; --tx2: #6b6b6b; --tx3: #9b9b9b;
+    --bd: rgba(0,0,0,0.08); --bd2: rgba(0,0,0,0.15);
+    --teal50: #E1F5EE; --teal600: #0F6E56; --teal800: #085041;
+    --blue50: #E6F1FB; --blue600: #185FA5; --blue800: #0C447C;
+    --purple50: #EEEDFE; --purple600: #534AB7; --purple800: #3C3489;
+    --amber50: #FAEEDA; --amber600: #854F0B; --amber800: #633806;
+    --coral50: #FAECE7; --coral600: #993C1D; --coral800: #712B13;
+    --pink50: #FBEAF0; --pink600: #993556; --pink800: #72243E;
+    --green: #1D9E75; --blueM: #378ADD; --purpleM: #7F77DD;
+    --red50: #FCEBEB; --red800: #791F1F;
+    --green50: #EAF3DE; --green800: #27500A;
+    --warn50: #FFF8E1; --warn800: #7A5F00;
+    --imp-low: #B4B2A9; --imp-med: #378ADD; --imp-hi: #185FA5;
+    --done-ring: #1D9E75; --ing-ring: #378ADD; --ns-ring: rgba(0,0,0,0.15);
+    --radius: 8px; --radius-lg: 12px;
+    --font: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #191919; --bg2: #252525; --bg3: #2d2d2d;
+      --tx: #e0e0e0; --tx2: #999; --tx3: #666;
+      --bd: rgba(255,255,255,0.08); --bd2: rgba(255,255,255,0.15);
+      --teal50: #085041; --teal600: #5DCAA5; --teal800: #9FE1CB;
+      --blue50: #0C447C; --blue600: #85B7EB; --blue800: #B5D4F4;
+      --purple50: #3C3489; --purple600: #AFA9EC; --purple800: #CECBF6;
+      --amber50: #633806; --amber600: #EF9F27; --amber800: #FAC775;
+      --coral50: #712B13; --coral600: #F0997B; --coral800: #F5C4B3;
+      --pink50: #72243E; --pink600: #ED93B1; --pink800: #F4C0D1;
+      --imp-low: #888780; --imp-med: #85B7EB; --imp-hi: #B5D4F4;
+      --ns-ring: rgba(255,255,255,0.2);
+      --red50: #501313; --red800: #F7C1C1;
+      --green50: #173404; --green800: #C0DD97;
+      --warn50: #412402; --warn800: #FAC775;
+    }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font); background: var(--bg); color: var(--tx); font-size: 13px; line-height: 1.5; padding: 20px; max-width: 900px; margin: 0 auto; }
+
+  .title-bar { display: flex; align-items: center; gap: 10px; margin: 0 0 6px; }
+  .title-bar h1 { font-size: 18px; font-weight: 600; }
+  .subtitle { font-size: 12px; color: var(--tx2); margin: 0 0 20px; }
+
+  .filters { display: flex; gap: 5px; margin: 0 0 16px; flex-wrap: wrap; }
+  .fbtn { font-family: var(--font); font-size: 12px; padding: 5px 14px; border-radius: 20px; border: 1px solid var(--bd2); background: transparent; color: var(--tx2); cursor: pointer; transition: all .15s; }
+  .fbtn:hover { background: var(--bg2); }
+  .fbtn.on { background: var(--tx); color: var(--bg); border-color: var(--tx); }
+  .sort-group { margin-left: auto; display: flex; gap: 5px; }
+  .sort-group .fbtn { font-size: 11px; padding: 4px 10px; border-radius: 14px; }
+
+  .matrix-wrap { overflow-x: auto; margin: 0 0 8px; }
+
+  .hdr-row { display: grid; grid-template-columns: 160px repeat(6, minmax(0,1fr)); gap: 3px; margin: 0 0 3px; }
+  .hdr-cell { font-size: 11px; font-weight: 600; text-align: center; padding: 10px 4px; border-radius: var(--radius) var(--radius) 0 0; line-height: 1.3; }
+
+  .phase-label { font-size: 11px; font-weight: 600; color: var(--tx2); padding: 12px 0 4px; letter-spacing: 0.5px; text-transform: uppercase; }
+  .divider { height: 1px; background: var(--bd); margin: 2px 0; }
+
+  .body-row { display: grid; grid-template-columns: 160px repeat(6, minmax(0,1fr)); gap: 3px; margin: 0 0 3px; }
+  .row-label { font-size: 12px; padding: 6px 8px; display: flex; align-items: center; color: var(--tx); line-height: 1.3; border-radius: var(--radius) 0 0 var(--radius); background: var(--bg2); font-weight: 500; }
+
+  .cell { min-height: 40px; border-radius: 6px; display: flex; align-items: center; justify-content: center; position: relative; transition: all .15s; }
+  .cell.empty { background: var(--bg2); opacity: 0.25; }
+  .cell.filled { cursor: pointer; }
+  .cell.filled:hover { transform: scale(1.08); z-index: 5; }
+
+  .dot { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; color: #fff; transition: all .15s; }
+  .dot.imp-lo { background: var(--imp-low); }
+  .dot.imp-md { background: var(--imp-med); }
+  .dot.imp-hi { background: var(--imp-hi); }
+  .dot.st-done { box-shadow: 0 0 0 2.5px var(--done-ring); }
+  .dot.st-ing { box-shadow: 0 0 0 2.5px var(--ing-ring); }
+  .dot.st-ns { box-shadow: 0 0 0 2px var(--ns-ring); }
+
+  .tooltip { position: absolute; bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%); background: var(--bg); border: 1px solid var(--bd2); border-radius: var(--radius-lg); padding: 12px 14px; font-size: 12px; line-height: 1.5; color: var(--tx); width: 240px; z-index: 20; pointer-events: none; opacity: 0; transition: opacity .12s; box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+  .cell.filled:hover .tooltip { opacity: 1; }
+  .tooltip b { font-weight: 600; display: block; margin: 0 0 6px; font-size: 13px; }
+  .tooltip .meta { font-size: 11px; color: var(--tx2); margin: 0 0 8px; }
+  .tooltip .tt-row { display: flex; align-items: center; gap: 6px; margin: 3px 0; }
+  .tooltip .tt-label { font-size: 10px; min-width: 30px; font-weight: 600; }
+  .tooltip .tt-track { flex: 1; height: 5px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
+  .tooltip .tt-fill { height: 100%; border-radius: 3px; }
+
+  .summary-row { display: grid; grid-template-columns: 160px repeat(6, minmax(0,1fr)); gap: 3px; margin: 10px 0 0; }
+  .sum-label { font-size: 11px; color: var(--tx2); padding: 8px; display: flex; align-items: center; font-weight: 500; }
+  .sum-cell { text-align: center; padding: 8px 4px; }
+  .tag { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 10px; display: inline-block; }
+  .tag-gap { background: var(--red50); color: var(--red800); }
+  .tag-ok { background: var(--green50); color: var(--green800); }
+  .tag-warn { background: var(--warn50); color: var(--warn800); }
+
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; margin: 16px 0 0; padding: 14px 0 0; border-top: 1px solid var(--bd); }
+  .leg { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--tx2); }
+  .leg .sw { width: 12px; height: 12px; border-radius: 50%; }
+  .leg .ring { width: 12px; height: 12px; border-radius: 50%; background: transparent; }
+
+  .insight-box { margin: 20px 0 0; padding: 16px; background: var(--bg2); border-radius: var(--radius-lg); border: 1px solid var(--bd); }
+  .insight-box h3 { font-size: 13px; font-weight: 600; margin: 0 0 10px; }
+  .insight-item { font-size: 12px; color: var(--tx2); margin: 4px 0; line-height: 1.6; padding-left: 16px; position: relative; }
+  .insight-item::before { content: ''; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: var(--imp-med); }
+
+  .embed-note { margin: 20px 0 0; padding: 12px 16px; background: var(--blue50); color: var(--blue800); border-radius: var(--radius); font-size: 11px; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<div class="title-bar">
+  <span style="font-size:22px">🗺️</span>
+  <h1>AIA 마일스톤 × 고객 여정 매트릭스</h1>
+</div>
+<div class="subtitle">AI Agent 프로젝트 마일스톤을 6단계 고객 여정 기준으로 매핑 · 영향도(거래액·리텐션·경험) 표현 · 2026-03-20</div>
+
+<div class="filters">
+  <button class="fbtn on" onclick="filterPhase('all',this)">All</button>
+  <button class="fbtn" onclick="filterPhase(1,this)">Phase 1 (now)</button>
+  <button class="fbtn" onclick="filterPhase(2,this)">Phase 2 (next)</button>
+  <button class="fbtn" onclick="filterPhase(3,this)">Phase 3 (future)</button>
+  <div class="sort-group">
+    <button class="fbtn" onclick="sortBy('default')">기본순</button>
+    <button class="fbtn" onclick="sortBy('impact')">영향도순</button>
+    <button class="fbtn" onclick="sortBy('journey')">여정 커버리지순</button>
+  </div>
+</div>
+
+<div class="matrix-wrap">
+  <div class="hdr-row">
+    <div style="padding:8px;font-size:11px;color:var(--tx3);font-weight:500">Feature</div>
+    <div class="hdr-cell" style="background:var(--teal50);color:var(--teal800)">① 니즈 인식</div>
+    <div class="hdr-cell" style="background:var(--blue50);color:var(--blue800)">② 정보 수집</div>
+    <div class="hdr-cell" style="background:var(--purple50);color:var(--purple800)">③ 취향 구체화</div>
+    <div class="hdr-cell" style="background:var(--amber50);color:var(--amber800)">④ 공간 설계</div>
+    <div class="hdr-cell" style="background:var(--coral50);color:var(--coral800)">⑤ 상품 결정</div>
+    <div class="hdr-cell" style="background:var(--pink50);color:var(--pink800)">⑥ 구매·실행</div>
+  </div>
+  <div id="matrix"></div>
+  <div class="summary-row" id="summary-row">
+    <div class="sum-label">Coverage</div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="leg"><div class="sw" style="background:var(--imp-hi)"></div>높은 영향도</div>
+  <div class="leg"><div class="sw" style="background:var(--imp-med)"></div>보통</div>
+  <div class="leg"><div class="sw" style="background:var(--imp-low)"></div>낮음</div>
+  <div class="leg"><div class="ring" style="box-shadow:0 0 0 2.5px var(--done-ring);"></div>Done</div>
+  <div class="leg"><div class="ring" style="box-shadow:0 0 0 2.5px var(--ing-ring);"></div>In progress</div>
+  <div class="leg"><div class="ring" style="box-shadow:0 0 0 2px var(--ns-ring);"></div>Not started</div>
+  <div style="flex:1"></div>
+  <div class="leg"><div class="sw" style="background:var(--green)"></div>GMV</div>
+  <div class="leg"><div class="sw" style="background:var(--blueM)"></div>Retention</div>
+  <div class="leg"><div class="sw" style="background:var(--purpleM)"></div>Experience</div>
+</div>
+
+<div class="insight-box">
+  <h3>구조적 시사점</h3>
+  <div class="insight-item">② 정보 수집이 전 Phase 통틀어 가장 얇은 구간 (25%) — 추가 커버 필요 여부 검토 포인트</div>
+  <div class="insight-item">Phase 1은 ④공간 설계·⑤상품 결정 집중 — 거래액 우선 전략 명확</div>
+  <div class="insight-item">Memory 시스템이 유일하게 전 여정(①~⑥) 관통 — 리텐션 구조의 핵심 인프라</div>
+  <div class="insight-item">Agent↔Agent 연동 + Memory = Phase 2의 분기점 (개별 기능 → 여정 연속성)</div>
+  <div class="insight-item">⑥ 구매·실행은 Phase 2+ 의존 — "결정→실행" 전환 구간 보강 시점 주시</div>
+</div>
+
+<div class="embed-note">
+  💡 <strong>Notion embed 방법</strong>: 이 파일을 GitHub Pages, Vercel, 또는 S3 등에 호스팅한 후, Notion에서 <code>/embed</code> 블록으로 URL을 삽입하세요.
+</div>
+
+<script>
+const DATA=[
+{id:1,name:"도면 템플릿",phase:1,status:"done",j:[0,1,0,1,0,0],imp:[0,40,0,70,0,0],gmv:40,ret:60,exp:70},
+{id:2,name:"핵심상품 3D 전환",phase:1,status:"ing",j:[0,0,0,1,1,0],imp:[0,0,0,90,85,0],gmv:85,ret:50,exp:90},
+{id:3,name:"사진→3D (AI 가구 스캔)",phase:1,status:"ing",j:[0,1,0,1,0,0],imp:[0,60,0,95,0,0],gmv:60,ret:65,exp:95},
+{id:4,name:"사진→상품추천",phase:1,status:"ing",j:[0,0,1,0,1,0],imp:[0,0,75,0,90,0],gmv:90,ret:40,exp:75},
+{id:5,name:"자연어 상품찾기 (AI 홈스타일링챗)",phase:1,status:"ing",j:[1,0,1,0,1,0],imp:[50,0,80,0,80,0],gmv:80,ret:55,exp:80},
+{id:6,name:"영역지정 편집 (AI 공간진단)",phase:1,status:"ns",j:[0,0,0,1,1,0],imp:[0,0,0,85,70,0],gmv:70,ret:70,exp:85},
+{id:7,name:"취향보드 (무드보드) 생성",phase:1,status:"ns",j:[0,0,1,0,0,0],imp:[0,0,90,0,0,0],gmv:45,ret:75,exp:90},
+{id:8,name:"배치 에이전트",phase:1,status:"ns",j:[0,0,0,1,1,1],imp:[0,0,0,95,95,80],gmv:95,ret:60,exp:95},
+{id:9,name:"방용도 & 가구리스트 Agent",phase:2,status:"ns",j:[1,1,1,0,0,0],imp:[70,65,75,0,0,0],gmv:55,ret:70,exp:75},
+{id:10,name:"Agent ↔ Agent 연동",phase:2,status:"ns",j:[0,0,1,1,1,1],imp:[0,0,85,90,90,80],gmv:85,ret:90,exp:95},
+{id:11,name:"Memory 시스템 (전 여정)",phase:2,status:"ns",j:[1,1,1,1,1,1],imp:[60,55,70,75,65,50],gmv:60,ret:95,exp:85},
+{id:12,name:"데이터 연동 (LSG·리뷰·CMS)",phase:2,status:"ns",j:[1,0,0,0,1,0],imp:[50,0,0,0,70,0],gmv:70,ret:65,exp:50},
+{id:13,name:"고도화 + 지면확대 + 렌더링",phase:2,status:"ns",j:[0,0,0,1,1,1],imp:[0,0,0,70,75,65],gmv:75,ret:50,exp:70},
+{id:14,name:"저관여 시나리오 (데스크테리어 등)",phase:3,status:"ns",j:[1,0,1,0,0,1],imp:[55,0,60,0,0,70],gmv:50,ret:90,exp:60},
+{id:15,name:"오프라인 플래그십 스토어",phase:3,status:"ns",j:[0,0,0,0,1,1],imp:[0,0,0,0,80,85],gmv:80,ret:45,exp:85},
+{id:16,name:"글로벌·PC·O2O·광고",phase:3,status:"ns",j:[0,0,0,0,1,1],imp:[0,0,0,0,70,90],gmv:90,ret:55,exp:40}
+];
+const STAGES=['니즈','정보','취향','설계','결정','구매'];
+let currentFilter='all', currentSort='default';
+
+function impClass(v){ return v>=80?'imp-hi':v>=50?'imp-md':'imp-lo'; }
+function stClass(s){ return s==='done'?'st-done':s==='ing'?'st-ing':'st-ns'; }
+function stLabel(s){ return s==='done'?'✅ Done':s==='ing'?'🔵 In progress':'⬜ Not started'; }
+function phaseLabel(p){ return p===1?'Phase 1 · Zero to One (now)':p===2?'Phase 2 · Orchestration (next)':'Phase 3 · Scale-up (future)'; }
+
+function render(data){
+  const mx=document.getElementById('matrix');
+  mx.innerHTML='';
+  let lastPhase=0;
+  data.forEach(d=>{
+    if(currentSort==='default' && d.phase!==lastPhase){
+      if(lastPhase!==0){ const dv=document.createElement('div'); dv.className='divider'; mx.appendChild(dv); }
+      const pl=document.createElement('div'); pl.className='phase-label'; pl.textContent=phaseLabel(d.phase);
+      mx.appendChild(pl);
+      lastPhase=d.phase;
+    } else if(currentSort!=='default' && lastPhase===0){ lastPhase=d.phase; }
+
+    const row=document.createElement('div'); row.className='body-row';
+    const lbl=document.createElement('div'); lbl.className='row-label'; lbl.textContent=d.name;
+    row.appendChild(lbl);
+
+    for(let i=0;i<6;i++){
+      const cell=document.createElement('div');
+      if(d.j[i]){
+        cell.className='cell filled';
+        const dot=document.createElement('div');
+        dot.className='dot '+impClass(d.imp[i])+' '+stClass(d.status);
+        dot.textContent=d.imp[i];
+        cell.appendChild(dot);
+
+        const tt=document.createElement('div'); tt.className='tooltip';
+        tt.innerHTML=`<b>${d.name}</b><div class="meta">${stLabel(d.status)} · Stage ${i+1} ${STAGES[i]}</div>`+
+          `<div class="tt-row"><span class="tt-label" style="color:var(--green)">GMV</span><div class="tt-track"><div class="tt-fill" style="width:${d.gmv}%;background:var(--green)"></div></div><span style="font-size:10px;min-width:24px;text-align:right;color:var(--tx2)">${d.gmv}</span></div>`+
+          `<div class="tt-row"><span class="tt-label" style="color:var(--blueM)">Ret</span><div class="tt-track"><div class="tt-fill" style="width:${d.ret}%;background:var(--blueM)"></div></div><span style="font-size:10px;min-width:24px;text-align:right;color:var(--tx2)">${d.ret}</span></div>`+
+          `<div class="tt-row"><span class="tt-label" style="color:var(--purpleM)">Exp</span><div class="tt-track"><div class="tt-fill" style="width:${d.exp}%;background:var(--purpleM)"></div></div><span style="font-size:10px;min-width:24px;text-align:right;color:var(--tx2)">${d.exp}</span></div>`;
+        cell.appendChild(tt);
+      } else { cell.className='cell empty'; }
+      row.appendChild(cell);
+    }
+    mx.appendChild(row);
+  });
+
+  const sr=document.getElementById('summary-row');
+  sr.innerHTML='<div class="sum-label">Coverage</div>';
+  for(let i=0;i<6;i++){
+    const count=data.filter(d=>d.j[i]).length;
+    const pct=Math.round(count/data.length*100);
+    const sc=document.createElement('div'); sc.className='sum-cell';
+    let cls=pct>=50?'tag-ok':pct>=30?'tag-warn':'tag-gap';
+    let lbl=pct<30?`${count}건 (${pct}%) Gap`:pct<50?`${count}건 (${pct}%)`:`${count}건 (${pct}%)`;
+    sc.innerHTML=`<span class="tag ${cls}">${lbl}</span>`;
+    sr.appendChild(sc);
+  }
+}
+
+function filterPhase(p,el){
+  currentFilter=p;
+  document.querySelectorAll('.filters > .fbtn').forEach(b=>b.classList.remove('on'));
+  if(el) el.classList.add('on');
+  let d=p==='all'?[...DATA]:DATA.filter(x=>x.phase===p);
+  if(currentSort!=='default') d=doSort(d);
+  render(d);
+}
+
+function doSort(d){
+  if(currentSort==='impact') return [...d].sort((a,b)=>(b.gmv+b.ret+b.exp)-(a.gmv+a.ret+a.exp));
+  if(currentSort==='journey') return [...d].sort((a,b)=>b.j.filter(Boolean).length-a.j.filter(Boolean).length);
+  return d;
+}
+
+function sortBy(mode){
+  currentSort=mode;
+  let d=currentFilter==='all'?[...DATA]:DATA.filter(x=>x.phase===currentFilter);
+  if(mode!=='default') d=doSort(d);
+  render(d);
+}
+
+render(DATA);
+</script>
+</body>
+</html>
