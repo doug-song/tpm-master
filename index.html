@@ -1,0 +1,226 @@
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+.w{padding:.5rem 0;font-size:13px}
+.tabs{display:flex;gap:4px;margin:0 0 16px;flex-wrap:wrap}
+.tb{font-size:12px;padding:6px 14px;border-radius:20px;border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-secondary);cursor:pointer;transition:all .12s;line-height:1.3}
+.tb:hover{background:var(--color-background-secondary)}
+.tb.on{background:var(--color-text-primary);color:var(--color-background-primary);border-color:var(--color-text-primary)}
+.tb .sub{font-size:10px;display:block;opacity:.7;margin-top:1px}
+.pf{display:flex;gap:4px;margin:0 0 12px;flex-wrap:wrap;align-items:center}
+.pf-l{font-size:10px;color:var(--color-text-tertiary);margin-right:2px}
+.pb{font-size:10px;padding:3px 10px;border-radius:14px;border:0.5px solid var(--color-border-tertiary);background:transparent;color:var(--color-text-secondary);cursor:pointer;transition:all .1s}
+.pb:hover{background:var(--color-background-secondary)}
+.pb.on{background:var(--color-text-secondary);color:var(--color-background-primary);border-color:var(--color-text-secondary)}
+.mx{overflow-x:auto;margin:0 0 6px}
+.hr{display:grid;gap:2px;margin:0 0 2px}
+.hc{font-size:11px;font-weight:500;text-align:center;padding:9px 3px;border-radius:var(--border-radius-md) var(--border-radius-md) 0 0;line-height:1.25}
+.br{display:grid;gap:2px;margin:0 0 2px}
+.rl{font-size:11px;padding:5px 6px;display:flex;align-items:center;color:var(--color-text-primary);line-height:1.3;border-radius:var(--border-radius-md) 0 0 var(--border-radius-md);background:var(--color-background-secondary);font-weight:500;gap:4px}
+.rl .sd{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.c{min-height:38px;border-radius:5px;display:flex;align-items:center;justify-content:center;position:relative;transition:all .12s}
+.c.e{background:var(--color-background-secondary);opacity:.18}
+.c.f{cursor:pointer}.c.f:hover{transform:scale(1.07);z-index:5}
+.d{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:500;color:#fff}
+.d.hi{background:#185FA5}.d.md{background:#378ADD}.d.lo{background:#B4B2A9}
+.tp{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:10px 12px;font-size:11px;line-height:1.5;color:var(--color-text-primary);width:230px;z-index:20;pointer-events:none;opacity:0;transition:opacity .1s}
+.c.f:hover .tp{opacity:1}
+.tp b{font-weight:500;display:block;margin:0 0 3px;font-size:12px}
+.tp .mt{font-size:10px;color:var(--color-text-secondary);margin:0 0 6px}
+.tr{display:flex;align-items:center;gap:4px;margin:2px 0}
+.tr span:first-child{font-size:10px;min-width:28px;font-weight:500}
+.tr .tk{flex:1;height:4px;background:var(--color-background-secondary);border-radius:2px;overflow:hidden}
+.tr .tf{height:100%;border-radius:2px}
+.sr{display:grid;gap:2px;margin:8px 0 0}
+.sc{text-align:center;padding:6px 2px}
+.tg{font-size:10px;font-weight:500;padding:2px 8px;border-radius:10px;display:inline-block}
+.tg-g{background:var(--color-background-success);color:var(--color-text-success)}
+.tg-w{background:var(--color-background-warning);color:var(--color-text-warning)}
+.tg-r{background:var(--color-background-danger);color:var(--color-text-danger)}
+.lg{display:flex;gap:12px;flex-wrap:wrap;margin:10px 0 0;padding:10px 0 0;border-top:0.5px solid var(--color-border-tertiary)}
+.li{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--color-text-secondary)}
+.li .sw{width:10px;height:10px;border-radius:50%}
+.dv{height:1px;background:var(--color-border-tertiary);margin:4px 0}
+.pl{font-size:10px;font-weight:500;color:var(--color-text-secondary);padding:8px 0 3px;letter-spacing:.3px}
+.ins{margin:14px 0 0;padding:12px 14px;background:var(--color-background-secondary);border-radius:var(--border-radius-lg);border:0.5px solid var(--color-border-tertiary)}
+.ins-t{font-size:12px;font-weight:500;margin:0 0 6px}
+.ins-i{font-size:11px;color:var(--color-text-secondary);margin:3px 0;line-height:1.5;padding-left:14px;position:relative}
+.ins-i::before{content:'';position:absolute;left:0;top:7px;width:5px;height:5px;border-radius:50%}
+@media(prefers-color-scheme:dark){.d.hi{background:#B5D4F4;color:#042C53}.d.md{background:#85B7EB;color:#042C53}.d.lo{background:#888780;color:#fff}}
+</style>
+<div class="w">
+<div class="tabs">
+  <button class="tb on" onclick="setView('journey',this)">Customer journey<span class="sub">where in the journey</span></button>
+  <button class="tb" onclick="setView('object',this)">Object / Domain<span class="sub">what we handle</span></button>
+  <button class="tb" onclick="setView('money',this)">Monetization path<span class="sub">how it makes money</span></button>
+  <button class="tb" onclick="setView('segment',this)">Customer segment<span class="sub">who it serves</span></button>
+</div>
+<div class="pf">
+  <span class="pf-l">Product filter:</span>
+  <button class="pb on" onclick="setProd('all',this)">All</button>
+  <button class="pb" onclick="setProd('chat',this)">AI styling chat</button>
+  <button class="pb" onclick="setProd('diag',this)">AI layout diag</button>
+  <button class="pb" onclick="setProd('scan',this)">AI furniture scan</button>
+</div>
+<div class="mx">
+  <div class="hr" id="hdr"></div>
+  <div id="matrix"></div>
+  <div class="sr" id="srow"></div>
+</div>
+<div class="lg">
+  <div class="li"><div class="sw" style="background:#185FA5"></div>high</div>
+  <div class="li"><div class="sw" style="background:#378ADD"></div>med</div>
+  <div class="li"><div class="sw" style="background:#B4B2A9"></div>low</div>
+  <div class="li"><div class="sw" style="background:#1D9E75"></div>done</div>
+  <div class="li"><div class="sw" style="background:#378ADD"></div>ing</div>
+  <div class="li"><div class="sw" style="background:var(--color-border-tertiary)"></div>not started</div>
+  <div style="flex:1"></div>
+  <div class="li"><div class="sw" style="background:#1D9E75"></div>GMV</div>
+  <div class="li"><div class="sw" style="background:#378ADD"></div>Ret</div>
+  <div class="li"><div class="sw" style="background:#7F77DD"></div>Exp</div>
+</div>
+<div class="ins" id="insight"></div>
+</div>
+<script>
+const D=[
+{n:"도면 템플릿",p:1,s:"done",gmv:40,ret:60,exp:70,prod:{chat:0,diag:1,scan:0},
+ journey:[0,1,0,1,0,0],jimp:[0,40,0,70,0,0],
+ object:[1,0,0,0],oimp:[70,0,0,0],
+ money:[0,1,1],mimp:[0,60,70],
+ segment:[1,1,0],simp:[70,50,0]},
+{n:"핵심상품 3D 전환",p:1,s:"ing",gmv:85,ret:50,exp:90,prod:{chat:0,diag:1,scan:0},
+ journey:[0,0,0,1,1,0],jimp:[0,0,0,90,85,0],
+ object:[0,1,0,0],oimp:[0,90,0,0],
+ money:[0,0,1],mimp:[0,0,90],
+ segment:[1,1,0],simp:[90,80,0]},
+{n:"사진→3D (AI 가구 스캔)",p:1,s:"ing",gmv:60,ret:65,exp:95,prod:{chat:0,diag:0,scan:1},
+ journey:[0,1,0,1,0,0],jimp:[0,60,0,95,0,0],
+ object:[1,1,0,0],oimp:[80,90,0,0],
+ money:[0,1,1],mimp:[0,65,95],
+ segment:[1,1,0],simp:[95,70,0]},
+{n:"사진→상품추천",p:1,s:"ing",gmv:90,ret:40,exp:75,prod:{chat:1,diag:0,scan:1},
+ journey:[0,0,1,0,1,0],jimp:[0,0,75,0,90,0],
+ object:[0,1,0,0],oimp:[0,90,0,0],
+ money:[1,0,0],mimp:[90,0,0],
+ segment:[1,1,1],simp:[70,85,90]},
+{n:"자연어 상품찾기 (AI 홈스타일링챗)",p:1,s:"ing",gmv:80,ret:55,exp:80,prod:{chat:1,diag:0,scan:0},
+ journey:[1,0,1,0,1,0],jimp:[50,0,80,0,80,0],
+ object:[0,1,0,0],oimp:[0,80,0,0],
+ money:[1,0,0],mimp:[80,0,0],
+ segment:[1,1,1],simp:[60,80,80]},
+{n:"영역지정 편집 (AI 공간진단)",p:1,s:"ns",gmv:70,ret:70,exp:85,prod:{chat:0,diag:1,scan:0},
+ journey:[0,0,0,1,1,0],jimp:[0,0,0,85,70,0],
+ object:[1,0,0,0],oimp:[85,0,0,0],
+ money:[0,1,0],mimp:[0,70,0],
+ segment:[1,1,0],simp:[85,70,0]},
+{n:"취향보드 (무드보드) 생성",p:1,s:"ns",gmv:45,ret:75,exp:90,prod:{chat:1,diag:0,scan:0},
+ journey:[0,0,1,0,0,0],jimp:[0,0,90,0,0,0],
+ object:[0,0,1,0],oimp:[0,0,90,0],
+ money:[0,1,0],mimp:[0,75,0],
+ segment:[1,1,0],simp:[90,65,0]},
+{n:"배치 에이전트",p:1,s:"ns",gmv:95,ret:60,exp:95,prod:{chat:0,diag:1,scan:0},
+ journey:[0,0,0,1,1,1],jimp:[0,0,0,95,95,80],
+ object:[1,1,0,0],oimp:[95,90,0,0],
+ money:[1,1,0],mimp:[95,60,0],
+ segment:[1,1,0],simp:[95,85,0]},
+{n:"방용도 & 가구리스트 Agent",p:2,s:"ns",gmv:55,ret:70,exp:75,prod:{chat:1,diag:0,scan:0},
+ journey:[1,1,1,0,0,0],jimp:[70,65,75,0,0,0],
+ object:[1,1,0,0],oimp:[75,65,0,0],
+ money:[0,1,0],mimp:[0,70,0],
+ segment:[1,1,0],simp:[75,60,0]},
+{n:"Agent ↔ Agent 연동",p:2,s:"ns",gmv:85,ret:90,exp:95,prod:{chat:1,diag:1,scan:1},
+ journey:[0,0,1,1,1,1],jimp:[0,0,85,90,90,80],
+ object:[1,1,1,0],oimp:[85,90,80,0],
+ money:[1,1,1],mimp:[85,90,95],
+ segment:[1,1,1],simp:[90,95,80]},
+{n:"Memory 시스템",p:2,s:"ns",gmv:60,ret:95,exp:85,prod:{chat:1,diag:1,scan:1},
+ journey:[1,1,1,1,1,1],jimp:[60,55,70,75,65,50],
+ object:[1,1,1,1],oimp:[70,65,70,80],
+ money:[0,1,1],mimp:[0,95,85],
+ segment:[1,1,1],simp:[80,85,70]},
+{n:"데이터 연동 (LSG·리뷰·CMS)",p:2,s:"ns",gmv:70,ret:65,exp:50,prod:{chat:1,diag:1,scan:1},
+ journey:[1,0,0,0,1,0],jimp:[50,0,0,0,70,0],
+ object:[0,1,0,1],oimp:[0,70,0,65],
+ money:[1,0,1],mimp:[70,0,65],
+ segment:[1,1,1],simp:[60,65,55]},
+{n:"고도화 + 지면확대 + 렌더링",p:2,s:"ns",gmv:75,ret:50,exp:70,prod:{chat:1,diag:1,scan:1},
+ journey:[0,0,0,1,1,1],jimp:[0,0,0,70,75,65],
+ object:[1,1,0,0],oimp:[70,75,0,0],
+ money:[1,1,0],mimp:[75,50,0],
+ segment:[1,1,1],simp:[65,70,55]},
+{n:"저관여 시나리오 (데스크테리어 등)",p:3,s:"ns",gmv:50,ret:90,exp:60,prod:{chat:1,diag:1,scan:0},
+ journey:[1,0,1,0,0,1],jimp:[55,0,60,0,0,70],
+ object:[1,1,1,0],oimp:[55,50,60,0],
+ money:[1,1,0],mimp:[50,90,0],
+ segment:[0,1,1],simp:[0,60,90]},
+{n:"오프라인 플래그십 스토어",p:3,s:"ns",gmv:80,ret:45,exp:85,prod:{chat:0,diag:1,scan:0},
+ journey:[0,0,0,0,1,1],jimp:[0,0,0,0,80,85],
+ object:[1,1,0,0],oimp:[80,85,0,0],
+ money:[1,0,0],mimp:[80,0,0],
+ segment:[1,0,0],simp:[85,0,0]},
+{n:"글로벌·PC·O2O·광고",p:3,s:"ns",gmv:90,ret:55,exp:40,prod:{chat:1,diag:1,scan:1},
+ journey:[0,0,0,0,1,1],jimp:[0,0,0,0,70,90],
+ object:[1,1,0,1],oimp:[60,70,0,80],
+ money:[1,0,1],mimp:[90,0,55],
+ segment:[1,1,1],simp:[70,75,60]}
+];
+
+const VIEWS={
+journey:{cols:["1 needs","2 info","3 taste","4 layout","5 product","6 buy"],key:"journey",imp:"jimp",
+  colors:["#E1F5EE;#085041","#E6F1FB;#0C447C","#EEEDFE;#3C3489","#FAEEDA;#633806","#FAECE7;#712B13","#FBEAF0;#72243E"],
+  insight:'<div class="ins-t">Customer journey insight</div><div class="ins-i" style="--c:#E24B4A"><b style="color:var(--color-text-danger)">2 info collection (25%)</b> is the thinnest stage across all phases</div><div class="ins-i" style="--c:#378ADD">Phase 1 concentrates on 4 layout + 5 product = GMV-first strategy</div><div class="ins-i" style="--c:#1D9E75">Memory system is the only item spanning all 6 stages</div>'},
+object:{cols:["Space (room)","Product (item)","Style (mood)","Data (user)"],key:"object",imp:"oimp",
+  colors:["#E6F1FB;#0C447C","#FAECE7;#712B13","#EEEDFE;#3C3489","#E1F5EE;#085041"],
+  insight:'<div class="ins-t">Object / domain insight</div><div class="ins-i" style="--c:#E24B4A"><b style="color:var(--color-text-danger)">Style (31%) and Data (25%)</b> are the thinnest domains</div><div class="ins-i" style="--c:#378ADD">Space + Product are well-covered from P1, but taste/data wait until P2</div><div class="ins-i" style="--c:#1D9E75">"Build on space+product first, unlock style+data in P2" structure</div>'},
+money:{cols:["Direct conversion","Engagement driver","Infrastructure"],key:"money",imp:"mimp",
+  colors:["#FAECE7;#712B13","#EEEDFE;#3C3489","#E1F5EE;#085041"],
+  insight:'<div class="ins-t">Monetization path insight</div><div class="ins-i" style="--c:#E24B4A"><b style="color:var(--color-text-danger)">Infrastructure (44%)</b> has fewest items but highest per-item impact (Memory 95, 3D 90)</div><div class="ins-i" style="--c:#378ADD">Direct conversion (69%) is strongest = P1 GMV target well-aligned</div><div class="ins-i" style="--c:#1D9E75">Engagement driver (63%) is the retention backbone, critical for P2 Retention KPI</div>'},
+segment:{cols:["Heavy (moving/reno)","Medium (partial)","Light (deco/desk)"],key:"segment",imp:"simp",
+  colors:["#FAECE7;#712B13","#EEEDFE;#3C3489","#E1F5EE;#085041"],
+  insight:'<div class="ins-t">Customer segment insight</div><div class="ins-i" style="--c:#E24B4A"><b style="color:var(--color-text-danger)">Light segment (44%)</b> almost empty until Phase 3 = DAU growth delayed</div><div class="ins-i" style="--c:#378ADD">Heavy (81%) dominates P1 = consistent with Jieun persona focus</div><div class="ins-i" style="--c:#1D9E75">Medium (75%) well-covered = partial restyle path (region edit, mood board) exists</div>'}
+};
+
+let curView='journey',curProd='all';
+
+function stCol(s){return s==='done'?'#1D9E75':s==='ing'?'#378ADD':'var(--color-border-tertiary)'}
+function ic(v){return v>=75?'hi':v>=45?'md':'lo'}
+function phLbl(p){return p===1?'Phase 1 (now)':p===2?'Phase 2 (next)':'Phase 3 (future)'}
+
+function render(){
+  const v=VIEWS[curView];const nc=v.cols.length;
+  const filtered=curProd==='all'?D:D.filter(d=>d.prod[curProd]);
+  const gt='155px repeat('+nc+',minmax(0,1fr))';
+  const h=document.getElementById('hdr');h.style.gridTemplateColumns=gt;
+  h.innerHTML='<div style="padding:6px;font-size:11px;color:var(--color-text-tertiary);font-weight:500">Feature</div>';
+  v.cols.forEach((c,i)=>{const[bg,fg]=v.colors[i].split(';');h.innerHTML+=`<div class="hc" style="background:${bg};color:${fg}">${c}</div>`;});
+  const mx=document.getElementById('matrix');mx.innerHTML='';let lp=0;
+  filtered.forEach(d=>{
+    if(d.p!==lp){if(lp)mx.innerHTML+='<div class="dv"></div>';mx.innerHTML+=`<div class="pl">${phLbl(d.p)}</div>`;lp=d.p;}
+    let r=`<div class="br" style="grid-template-columns:${gt}"><div class="rl"><span class="sd" style="background:${stCol(d.s)}"></span>${d.n}</div>`;
+    const arr=d[v.key],imp=d[v.imp];
+    for(let i=0;i<nc;i++){
+      if(arr[i]){
+        const stl=d.s==='done'?'box-shadow:0 0 0 2.5px #1D9E75':d.s==='ing'?'box-shadow:0 0 0 2.5px #378ADD':'box-shadow:0 0 0 1.5px var(--color-border-tertiary)';
+        r+=`<div class="c f"><div class="d ${ic(imp[i])}" style="${stl}">${imp[i]}</div>`;
+        r+=`<div class="tp"><b>${d.n}</b><div class="mt">${v.cols[i]} / Phase ${d.p}</div>`;
+        r+=`<div class="tr"><span style="color:#1D9E75">GMV</span><div class="tk"><div class="tf" style="width:${d.gmv}%;background:#1D9E75"></div></div></div>`;
+        r+=`<div class="tr"><span style="color:#378ADD">Ret</span><div class="tk"><div class="tf" style="width:${d.ret}%;background:#378ADD"></div></div></div>`;
+        r+=`<div class="tr"><span style="color:#7F77DD">Exp</span><div class="tk"><div class="tf" style="width:${d.exp}%;background:#7F77DD"></div></div></div></div></div>`;
+      }else{r+=`<div class="c e"></div>`;}
+    }
+    r+=`</div>`;mx.innerHTML+=r;
+  });
+  const sr=document.getElementById('srow');sr.style.gridTemplateColumns=gt;
+  sr.innerHTML='<div style="font-size:11px;color:var(--color-text-secondary);padding:6px;font-weight:500">Coverage</div>';
+  for(let i=0;i<nc;i++){
+    const cnt=filtered.filter(d=>d[v.key][i]).length;const pct=filtered.length?Math.round(cnt/filtered.length*100):0;
+    const cls=pct>=50?'tg-g':pct>=30?'tg-w':'tg-r';
+    sr.innerHTML+=`<div class="sc"><span class="tg ${cls}">${cnt} (${pct}%)</span></div>`;
+  }
+  document.getElementById('insight').innerHTML=v.insight;
+  document.querySelectorAll('.ins-i').forEach(el=>{const c=el.style.getPropertyValue('--c')||'#378ADD';el.style.cssText+=`;`;el.querySelector&&0;const b=document.createElement('style');});
+}
+function setView(vw,el){curView=vw;document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));el.classList.add('on');render();}
+function setProd(p,el){curProd=p;document.querySelectorAll('.pb').forEach(b=>b.classList.remove('on'));el.classList.add('on');render();}
+render();
+</script>
